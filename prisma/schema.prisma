@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Channel {
+  id              String   @id @default(cuid())
+  youtubeId       String   @unique
+  title           String
+  description     String?
+  thumbnailUrl    String?
+  subscriberCount Int?
+  videoCount      Int?
+  viewCount       Int?
+  trackedAt       DateTime @default(now())
+  lastSyncedAt    DateTime?
+  videos          Video[]
+}
+
+model Video {
+  id           String   @id @default(cuid())
+  youtubeId    String   @unique
+  channelId    String
+  channel      Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  thumbnailUrl String?
+  publishedAt  DateTime
+  views        Int      @default(0)
+  likes        Int      @default(0)
+  comments     Int      @default(0)
+  duration     String?
+  fetchedAt    DateTime @default(now())
+
+  @@index([channelId])
+  @@index([publishedAt])
+}
