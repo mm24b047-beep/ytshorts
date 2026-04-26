@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import { RefreshCw, Users, Video, Eye, AlertCircle } from "lucide-react";
 
@@ -121,13 +123,27 @@ export default function CreatorsPage() {
           ) : channels.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {channels.map((channel) => (
-                <div
+                <Link
                   key={channel.id}
-                  className="bg-neutral-900 rounded-xl p-5 border border-neutral-800 hover:border-neutral-700 transition-colors"
+                  href={`/creators/${channel.id}`}
+                  className="bg-neutral-900 rounded-xl p-5 border border-neutral-800 hover:border-neutral-700 transition-colors cursor-pointer"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-full bg-neutral-800 flex items-center justify-center text-lg font-bold text-neutral-400">
-                      {channel.title.charAt(0)}
+                    <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-neutral-800">
+                      {channel.thumbnailUrl ? (
+                        <Image
+                          src={channel.thumbnailUrl}
+                          alt={channel.title}
+                          fill
+                          sizes="56px"
+                          className="object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-neutral-700 text-lg font-bold text-neutral-400">
+                          {channel.title.charAt(0)}
+                        </div>
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-base font-semibold text-white truncate">{channel.title}</h3>
@@ -160,7 +176,7 @@ export default function CreatorsPage() {
                       <div className="text-white font-semibold text-sm">{formatNumber(channel.viewCount)}</div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
