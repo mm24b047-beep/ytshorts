@@ -11,6 +11,8 @@
   "dependencies": {
     "@prisma/adapter-libsql": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.104.1",
     "@types/node-cron": "^3.0.11",
     "axios": "^1.15.2",
     "libsql": "^0.5.29",
